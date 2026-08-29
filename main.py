@@ -24,6 +24,37 @@ def save_portfolio(portfolio):
 
     print("Your portfolio was saved.")
 
+def add_coin(portfolio):
+    symbol = input("Enter the coin symbol (e.g., BTC): ").strip().upper()
+    if symbol == "":
+        return
+
+    if symbol in portfolio:
+        print(f"{symbol} is already in the portfolio.")
+    else:
+        portfolio.add(symbol)
+        print(f"{symbol} was added to the portfolio.")
+
+def remove_coin(portfolio):
+    if not portfolio:
+        print("Your portfolio is empty. There is nothing to remove.")
+        return
+    remove_symbol = input("Enter the coin symbol to remove: ").strip().upper()
+    if remove_symbol == "":
+        return
+    if remove_symbol not in portfolio:
+        print(f"{remove_symbol} is not in the portfolio.")
+    else:
+        portfolio.remove(remove_symbol)
+        print(f"{remove_symbol} was removed from the portfolio.")
+
+def view_portfolio(portfolio):
+    if not portfolio:
+        print("Your portfolio is empty. Add a coin to get started.")
+    else:
+        print("----portfolio----")
+        for item in portfolio:
+            print(item)
 
 def main():
     portfolio = load_portfolio()
@@ -39,39 +70,13 @@ def main():
         choice = input("Choose an option: ").strip()
 
         if choice == "1":
-            symbol = input("Enter the coin symbol (e.g., BTC): ").strip().upper()
-            if symbol == "":
-                continue
-
-            if symbol in portfolio:
-                print(f"{symbol} is already in the portfolio.")
-            else:
-                portfolio.add(symbol)
-                print(f"{symbol} was added to the portfolio.")
+            add_coin(portfolio)
 
         elif choice == "2":
-            if not portfolio:
-                print("Your portfolio is empty. Add a coin to get started.")
-            else:
-                print("---- Your Portfolio ----")
-                for item in portfolio:
-                    print(item)
+            view_portfolio(portfolio)
 
         elif choice == "3":
-            if not portfolio:
-                print("Your portfolio is empty. There is nothing to remove.")
-                continue
-
-            remove_symbol = input("Enter the coin symbol to remove: ").strip().upper()
-
-            if remove_symbol == "":
-                continue
-
-            if remove_symbol not in portfolio:
-                print(f"{remove_symbol} is not in the portfolio.")
-            else:
-                portfolio.remove(remove_symbol)
-                print(f"{remove_symbol} was removed from the portfolio.")
+            remove_coin(portfolio)
 
         elif choice == "4":
             save_portfolio(portfolio)
