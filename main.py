@@ -1,9 +1,18 @@
 import json
+import sys
+from pathlib import Path
 
+
+if getattr(sys, "frozen", False):
+    BASE_DIR = Path(sys.executable).resolve().parent
+else:
+    BASE_DIR = Path(__file__).resolve().parent
+
+SAVE_FILE = BASE_DIR / "save_portfolio.json"
 
 def load_portfolio():
     try:
-        with open("save_portfolio.json", "r") as file:
+        with open(SAVE_FILE, "r") as file:
             listed_portfolio = json.load(file)
 
         portfolio = set(listed_portfolio)
@@ -19,10 +28,11 @@ def load_portfolio():
 def save_portfolio(portfolio):
     listed_portfolio = list(portfolio)
 
-    with open("save_portfolio.json", "w") as f:
+    with open(SAVE_FILE, "w") as f:
         json.dump(listed_portfolio, f)
 
     print("Your portfolio was saved.")
+
 
 def add_coin(portfolio):
     symbol = input("Enter the coin symbol (e.g., BTC): ").strip().upper()
@@ -34,6 +44,7 @@ def add_coin(portfolio):
     else:
         portfolio.add(symbol)
         print(f"{symbol} was added to the portfolio.")
+
 
 def remove_coin(portfolio):
     if not portfolio:
@@ -48,6 +59,7 @@ def remove_coin(portfolio):
         portfolio.remove(remove_symbol)
         print(f"{remove_symbol} was removed from the portfolio.")
 
+
 def view_portfolio(portfolio):
     if not portfolio:
         print("Your portfolio is empty. Add a coin to get started.")
@@ -55,6 +67,7 @@ def view_portfolio(portfolio):
         print("----portfolio----")
         for item in portfolio:
             print(item)
+
 
 def main():
     portfolio = load_portfolio()
@@ -82,4 +95,5 @@ def main():
             save_portfolio(portfolio)
 
 
-main()
+if __name__ == "__main__":
+    main()
