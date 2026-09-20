@@ -31,8 +31,20 @@ jobs:
       - name: Build FOU
         run: python -m PyInstaller --clean --onefile --name FOU main.py
 
-      - name: Upload build
+      - name: Package Unix build
+        if: runner.os != 'Windows'
+        run: tar -czf FOU-${{ runner.os }}.tar.gz -C dist FOU
+
+      - name: Upload Windows build
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v7
+        with:
+          name: FOU-windows-latest
+          path: dist/FOU.exe
+
+      - name: Upload Unix build
+        if: runner.os != 'Windows'
         uses: actions/upload-artifact@v7
         with:
           name: FOU-${{ matrix.os }}
-          path: dist/FOU*
+          path: FOU-${{ runner.os }}.tar.gz
