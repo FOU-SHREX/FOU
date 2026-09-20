@@ -17,11 +17,11 @@ def get_coin_list():
 
     try:
         response_list = requests.get(URL1, timeout = 60)
-    
+
     except requests.exceptions.Timeout:
         print("FOU server took too long to respond.")
         return None
-    
+
     except requests.exceptions.RequestException:
         print("Could not connect to the FOU server")
         return None
@@ -32,7 +32,7 @@ def get_coin_list():
 
     try:
         coin_list = response_list.json()
-    
+
     except requests.exceptions.JSONDecodeError:
         print("FOU server returned invalid data.")
         return None
@@ -60,7 +60,7 @@ def get_market_data(ids):
     except requests.exceptions.Timeout:
         print("FOU server took too long to respond.")
         return None
-    
+
     except requests.exceptions.RequestException:
         print("Could not connect to the FOU server")
         return None
@@ -71,7 +71,7 @@ def get_market_data(ids):
 
     try:
         market_data = request_data.json()
-    
+
     except requests.exceptions.JSONDecodeError:
         print("FOU server returned invalid data.")
         return None
@@ -85,7 +85,7 @@ def find_coin(symbol, market_data):
     symbol = symbol.lower().strip()
 
     best_coin = None
-    best_rank = None 
+    best_rank = None
     fallback = None
 
     for coin in market_data:
@@ -104,7 +104,7 @@ def find_coin(symbol, market_data):
         if best_rank is None:
             best_rank = rank
             best_coin = coin
-        
+
         elif rank < best_rank :
             best_rank = rank
             best_coin = coin
@@ -118,10 +118,21 @@ def load_portfolio():
     try:
         with open(SAVE_FILE, "r") as file:
             portfolio = json.load(file)
+            if not isinstance(portfolio, dict):
+                raise ValueError
+
+            for symbol, coin_id in portfolio.items():
+                if (
+                    not isinstance(symbol, str)
+                    or not symbol.strip()
+                    or not isinstance(coin_id, str)
+                    or not coin_id.strip()
+                    ):
+                    raise ValueError
 
     except FileNotFoundError:
         portfolio = {}
-    except (json.JSONDecodeError, TypeError):
+    except (json.JSONDecodeError, TypeError, ValueError):
         portfolio = {}
         print("Something went wrong with the saved file.\nA new portfolio was created.")
 
@@ -158,14 +169,14 @@ def add_coin(portfolio, coin_list):
                                 batch_id.append(coin["id"])
 
                     market_data = get_market_data(batch_id)
-                    
+
                     if market_data is None:
                         print("Please try again.")
                         return
-                    
+
                     for symbol in pending:
                         result = find_coin(symbol, market_data)
-                    
+
                         if not result:
                             print("Couldn't find the coin add another coin")
                             continue
@@ -173,27 +184,27 @@ def add_coin(portfolio, coin_list):
                         else:
                             portfolio[symbol] = result["id"]
 
-                            print(f"{symbol} is added to the portfolio.")      
-                              
+                            print(f"{symbol} is added to the portfolio.")
+
                     break
 
 
         if symbol in portfolio:
             print(f"{symbol} is already in the portfolio.")
-        
+
         else:
             found = False
             for coin in coin_list:
                 if coin["symbol"] == symbol.lower():
                     found = True
                     break
-            
+
             if symbol in pending:
                 print(f"{symbol} is already in added.")
-            
+
             elif found:
                 pending.append(symbol)
-            
+
             elif found == False:
                 print("Coin not found.")
 
@@ -202,9 +213,9 @@ def remove_coin(portfolio):
     if not portfolio:
             print("Your portfolio is empty. There is nothing to remove.")
             return
-    
+
     print("Type 'Done' when finished.")
-    
+
     while True:
 
         if not portfolio:
@@ -229,7 +240,7 @@ def rank_key(coin):
     rank = coin["market_cap_rank"]
     if rank is None :
         rank = float("inf")
-        
+
     return rank
 
 
@@ -238,13 +249,13 @@ def view_portfolio(portfolio):
         print("Your portfolio is empty. Add a coin to get started.")
     else:
         all_ids = list(portfolio.values())
-        
+
         result_view = get_market_data(all_ids)
 
         if result_view is None:
             print("Please try again.")
             return
-        
+
         sort_data = sorted(result_view, key = rank_key)
 
         coin_width = 8
@@ -257,7 +268,7 @@ def view_portfolio(portfolio):
                 hidden_coin += 1
             else:
                 visible_coin.append(coin)
-         
+
         for coin in visible_coin:
             if len(coin["symbol"]) > coin_width :
                 coin_width = len(coin["symbol"])
@@ -270,11 +281,11 @@ def view_portfolio(portfolio):
             price = coin["current_price"]
             note = ""
             multiplier = 1
-        
-            while price <= 0.00000001: 
+
+            while price <= 0.00000001:
                 price = price*1000
                 multiplier *= 1000
-            
+
             if multiplier == 1:
                 note = ""
             elif multiplier == 1000:
@@ -299,8 +310,8 @@ def view_portfolio(portfolio):
             if price_width < len(row[2]):
                 price_width = len(row[2])
             else:
-                continue 
-        
+                continue
+
         base_table_width = 4+1+(coin_width)+3+(price_width)
         table_width = base_table_width
 
@@ -314,7 +325,7 @@ def view_portfolio(portfolio):
                     table_width = Note_row_width
                 else:
                     continue
-        
+
         header = f"{"#":<4} {"COIN":<{coin_width}} | {"PRICE":<{price_width}}"
 
         pipe_position = header.index("|")
@@ -323,7 +334,7 @@ def view_portfolio(portfolio):
         title = " PORTFOLIO "
 
         title_anchor = title.index("F")
-        
+
         left_dashes = pipe_position - title_anchor
 
         right_dash = table_width - left_dashes - len(title)
@@ -340,18 +351,18 @@ def view_portfolio(portfolio):
             if row[3] == "":
                 print(normal_row)
             else:
-                print(normal_row + " " + row[3]) 
-        
+                print(normal_row + " " + row[3])
+
         if hidden_coin == 0:
             return
 
         if hidden_coin == 1:
             print(f"{hidden_coin} coin hidden because its current price is zero.")
-        
+
         else:
             print(f"{hidden_coin} coins hidden because their current price is zero.")
-        
-            
+
+
 
 
 def main():
@@ -363,7 +374,7 @@ def main():
 
     if coin_list is None:
         return
-    
+
 
     while choice != "5":
         print("\n---- Options ----")
