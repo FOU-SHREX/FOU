@@ -6,6 +6,45 @@ It allows users to search for cryptocurrency symbols, add them to a local portfo
 
 FOU V2 uses a hosted backend to communicate with CoinGecko while keeping the API key out of the distributed desktop application.
 
+## Why I Built FOU
+
+FOU is my first serious programming project.
+
+I started building it while I was still learning Python, so the project has grown together with what I have learned. The first version was very simple, and I have been improving it step by step as I learn new concepts such as APIs, backend development, error handling, packaging, Git, GitHub, and cross-platform builds.
+
+The idea came from a problem I had myself.
+
+There are many cryptocurrencies I sometimes want to keep an eye on, but I did not always want to open an exchange, search for every coin again, or use a complicated trading application just to check a few prices.
+
+I wanted something simple:
+
+- Add the coins I care about
+- Open one small program
+- See their current prices
+- Keep the same list the next time I open it
+
+That became FOU.
+
+FOU is not a trading app and does not hold cryptocurrency. It is simply a personal cryptocurrency watchlist that helps you keep track of coins you are interested in.
+
+## What Is a Cryptocurrency Watchlist?
+
+You do not need to own cryptocurrency to use FOU.
+
+A cryptocurrency watchlist is simply a list of coins whose prices you want to follow.
+
+For example, imagine you are interested in:
+
+- Bitcoin (BTC)
+- Ethereum (ETH)
+- Solana (SOL)
+
+Instead of searching for each one separately every time, you can add them once to FOU.
+
+FOU remembers your list and can display their current market prices whenever you open the program.
+
+It does not connect to a wallet, buy cryptocurrency, sell cryptocurrency, or use real money.
+
 ## Features
 
 - Add valid cryptocurrency symbols to a portfolio
@@ -84,6 +123,55 @@ FOU stores `save_portfolio.json` beside the executable.
 FOU stores `save_portfolio.json` beside the executable.
 
 The macOS build is produced through GitHub Actions. It has been build-verified, but the current V2 release has not been manually runtime-tested on a physical Mac.
+
+## Beginner Guide
+
+If you have never used FOU or a cryptocurrency watchlist before, follow this example.
+
+When FOU opens, you will see:
+
+1. Add Coin
+2. View Portfolio
+3. Remove Coin
+4. Save Portfolio
+5. Exit
+
+### Step 1 — Add Coins
+
+Choose:
+
+`1. Add Coin`
+
+Enter a cryptocurrency symbol such as:
+
+`BTC`
+
+You can then add another one:
+
+`ETH`
+
+When you are finished adding coins, enter:
+
+`DONE`
+
+FOU checks that the symbols exist before adding them.
+
+### Step 2 — View Your Watchlist
+
+Choose:
+
+`2. View Portfolio`
+
+FOU will display the coins you added together with their current prices.
+
+Example:
+
+```text
+--------- PORTFOLIO --------
+#    COIN     | PRICE
+----------------------------
+1.   BTC      | $81,000.00
+2.   ETH      | $2,600.00
 
 ## What's New in V2
 
