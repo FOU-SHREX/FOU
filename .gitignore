@@ -6,3 +6,9 @@ dist/
 *.pyc
 backend/.venv/
 api_test.py
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+*.log

@@ -1,4 +1,5 @@
 import json
+import os
 import requests
 import sys
 from pathlib import Path
@@ -6,7 +7,21 @@ from pathlib import Path
 BACKEND_URL = (f"https://fou-backend.onrender.com")
 
 if getattr(sys, "frozen", False):
-    BASE_DIR = Path(sys.executable).resolve().parent
+    if sys.platform == "win32":
+        BASE_DIR = Path(
+            os.getenv("LOCALAPPDATA") or Path.home() / "AppData" / "Local"
+        ) / "FOU"
+
+    elif sys.platform == "darwin":
+        BASE_DIR = Path.home() / "Library" / "Application Support" / "FOU"
+
+    else:
+        BASE_DIR = Path(
+            os.getenv("XDG_DATA_HOME") or Path.home() / ".local" / "share"
+        ) / "FOU"
+
+    BASE_DIR.mkdir(parents=True, exist_ok=True)
+
 else:
     BASE_DIR = Path(__file__).resolve().parent
 
@@ -55,7 +70,7 @@ def get_market_data(ids):
     URL2 = (f"{BACKEND_URL}/market")
 
     try:
-        request_data = requests.get(URL2, params= params2, timeout= 10)
+        request_data = requests.get(URL2, params= params2, timeout= 60)
 
     except requests.exceptions.Timeout:
         print("FOU server took too long to respond.")
@@ -142,8 +157,41 @@ def load_portfolio():
 def save_portfolio(portfolio):
     with open(SAVE_FILE, "w") as f:
         json.dump(portfolio, f)
+    
+    return "saved"
 
-    print("Your portfolio was saved.")
+
+def add_coin_portfolio(portfolio, coin_list, symbol):
+
+    symbol= symbol.strip().upper()
+
+    if not symbol:
+        return "empty_symbol"
+    
+    if symbol in portfolio:
+        return "already_exists"
+    
+    candidate_ids = []
+
+    for coin in coin_list:
+        if coin["symbol"] == symbol.lower():
+            candidate_ids.append(coin["id"])
+
+    if not candidate_ids:
+        return "not_found"
+
+    market_data = get_market_data(candidate_ids)
+    
+    if market_data is None:
+        return "network_error"
+
+    result= find_coin(symbol, market_data)
+
+    if result is None:
+        return "not_found"
+    
+    portfolio[symbol]= result["id"]
+    return "added"
 
 
 def add_coin(portfolio, coin_list):
@@ -209,6 +257,22 @@ def add_coin(portfolio, coin_list):
                 print("Coin not found.")
 
 
+def remove_coin_portfolio(portfolio, symbol):
+    symbol = symbol.strip().upper()
+
+    if not symbol:
+        return "empty_symbol"
+    
+    if not portfolio:
+        return "empty_portfolio"
+    
+    if symbol not in portfolio:
+        return "not_found"
+
+    del portfolio[symbol]
+    return "removed"
+
+
 def remove_coin(portfolio):
     if not portfolio:
             print("Your portfolio is empty. There is nothing to remove.")
@@ -223,16 +287,20 @@ def remove_coin(portfolio):
             break
 
         remove_symbol = input("Enter the coin symbol to remove: ").strip().upper()
-
+        
         if remove_symbol == "DONE":
             print("Done removing coins.")
             break
-        if remove_symbol == "":
+
+        result = remove_coin_portfolio(portfolio, remove_symbol)
+        
+        if result == "empty_symbol":
             continue
-        if remove_symbol not in portfolio:
+        
+        if result == "not_found":
             print(f"{remove_symbol} is not in the portfolio.")
-        else:
-            del portfolio[remove_symbol]
+        
+        if result == "removed":
             print(f"{remove_symbol} was removed from the portfolio.")
 
 
@@ -244,19 +312,32 @@ def rank_key(coin):
     return rank
 
 
-def view_portfolio(portfolio):
+def get_portfolio_data(portfolio):
     if not portfolio:
-        print("Your portfolio is empty. Add a coin to get started.")
-    else:
-        all_ids = list(portfolio.values())
+        return "empty_portfolio", []
 
-        result_view = get_market_data(all_ids)
+    all_ids= list(portfolio.values())
 
-        if result_view is None:
-            print("Please try again.")
+    result_view = get_market_data(all_ids)
+
+    if result_view is None:
+        return "network_error", [] 
+
+    sort_data = sorted(result_view, key= rank_key)
+
+    return "ok", sort_data
+
+
+def view_portfolio(portfolio):
+        status, sort_data = get_portfolio_data(portfolio)
+
+        if status == "empty_portfolio":
+            print("Your portfolio is empty. Add a coin to get started.")
             return
 
-        sort_data = sorted(result_view, key = rank_key)
+        if status == "network_error":
+            print("Please try again.")
+            return
 
         coin_width = 8
 
@@ -395,7 +476,9 @@ def main():
             remove_coin(portfolio)
 
         elif choice == "4":
-            save_portfolio(portfolio)
+            result = save_portfolio(portfolio)
+            if result == "saved":
+                print("Your portfolio is saved.")
 
 
 if __name__ == "__main__":
