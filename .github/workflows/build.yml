@@ -1,4 +1,4 @@
-name: Build FOU
+name: Build FOU v2.5 GUI
 
 on:
   workflow_dispatch:
@@ -8,43 +8,97 @@ permissions:
 
 jobs:
   build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
 
-    runs-on: ${{ matrix.os }}
-
     steps:
-      - name: Checkout repository
+      - name: Check out source
         uses: actions/checkout@v7
 
-      - name: Set up Python
+      - name: Set up Python 3.14
         uses: actions/setup-python@v7
         with:
-          python-version: "3.14"
+          python-version: '3.14'
 
-      - name: Install dependencies
+      - name: Install GUI and packaging dependencies
+        run: python -m pip install pyinstaller==6.22.3 customtkinter pillow requests
+
+      - name: Check GUI source and bundled artwork
+        run: >-
+          python -c "from pathlib import Path;
+          files = [Path('gui.py'), Path('main.py'), Path('FOU-v2.5.spec'), Path('FOU-version.txt')]
+          + [Path('assets/reactions') / theme / (emotion + '.png')
+          for theme in ('fou_default', 'the_fool', 'void')
+          for emotion in ('idle', 'loading', 'happy', 'angry', 'confused', 'proud')];
+          missing = [str(p) for p in files if not p.is_file()];
+          print('Missing files:', missing);
+          assert not missing, 'Release files are missing'"
+
+      - name: Build Windows GUI with version metadata
+        if: runner.os == 'Windows'
+        run: python -m PyInstaller --noconfirm --clean FOU-v2.5.spec
+
+      - name: Build Linux GUI
+        if: runner.os == 'Linux'
+        run: >-
+          python -m PyInstaller --noconfirm --clean --onedir
+          --name FOU --add-data "assets:assets" --collect-all customtkinter gui.py
+
+      - name: Build macOS GUI app
+        if: runner.os == 'macOS'
+        run: >-
+          python -m PyInstaller --noconfirm --clean --onedir --windowed
+          --name FOU --add-data "assets:assets" --collect-all customtkinter gui.py
+
+      - name: Package Windows portable ZIP
+        if: runner.os == 'Windows'
+        shell: pwsh
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install requests pyinstaller
+          if (-not (Test-Path 'dist/FOU/FOU.exe')) { throw 'FOU.exe is missing' }
+          if (-not (Test-Path 'dist/FOU/_internal/assets/reactions/void/proud.png')) { throw 'Bundled VOID artwork is missing' }
+          Compress-Archive -Path 'dist/FOU' -DestinationPath 'FOU-v2.5-Windows.zip' -Force
 
-      - name: Build FOU
-        run: python -m PyInstaller --clean --onefile --name FOU main.py
+      - name: Package Linux TAR.GZ
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          test -f dist/FOU/FOU
+          test -f dist/FOU/_internal/assets/reactions/void/proud.png
+          chmod +x dist/FOU/FOU
+          tar -czf FOU-v2.5-Linux.tar.gz -C dist FOU
 
-      - name: Package Unix build
-        if: runner.os != 'Windows'
-        run: tar -czf FOU-${{ runner.os }}.tar.gz -C dist FOU
+      - name: Package macOS app ZIP
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          test -d dist/FOU.app
+          test -f dist/FOU.app/Contents/MacOS/FOU
+          ditto -c -k --sequesterRsrc --keepParent dist/FOU.app FOU-v2.5-macOS.zip
 
-      - name: Upload Windows build
+      - name: Upload Windows build artifact
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v7
         with:
-          name: FOU-windows-latest
-          path: dist/FOU.exe
+          name: FOU-v2.5-Windows
+          path: FOU-v2.5-Windows.zip
+          if-no-files-found: error
 
-      - name: Upload Unix build
-        if: runner.os != 'Windows'
+      - name: Upload Linux build artifact
+        if: runner.os == 'Linux'
         uses: actions/upload-artifact@v7
         with:
-          name: FOU-${{ matrix.os }}
-          path: FOU-${{ runner.os }}.tar.gz
+          name: FOU-v2.5-Linux
+          path: FOU-v2.5-Linux.tar.gz
+          if-no-files-found: error
+
+      - name: Upload macOS build artifact
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v7
+        with:
+          name: FOU-v2.5-macOS
+          path: FOU-v2.5-macOS.zip
+          if-no-files-found: error
