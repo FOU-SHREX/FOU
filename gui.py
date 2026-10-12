@@ -3618,10 +3618,18 @@ def remove_coin_gui(symbol):
 
 
 def save_portfolio_gui():
-    result = save_portfolio(portfolio)
+    try:
+        result = save_portfolio(portfolio)
+    except OSError as error:
+        print(f"[FOU] Portfolio save failed: {error}")
+        set_activity(
+            "Save failed. Check disk space or folder permissions.",
+            "confused"
+        )
+        return
 
     if result == "saved":
-       set_activity(
+        set_activity(
             "Portfolio saved successfully",
             "proud"
         )
