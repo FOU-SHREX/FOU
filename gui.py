@@ -60,7 +60,7 @@ add_queue = queue.Queue()
 last_rows = []
 selected_symbol = None
 last_updated_time = "--:--:--"
-HELP_VIDEO_URL = "https://youtu.be/eE9tV1WGTgE?si=AZ13N6KA7rpc3OwX"
+HELP_VIDEO_URL = "https://github.com/FOU-SHREX/FOU/blob/main/readme.md"
 
 coin_logo_source_cache = {}
 coin_logo_cache = {}

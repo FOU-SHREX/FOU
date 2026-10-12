@@ -1,17 +1,26 @@
 # FOU v2.5 — Crypto Portfolio Tracker
 
-**From a Python terminal experiment to a themed desktop application.**
+**A little Python watchlist that slowly turned into a desktop app.**
 
-FOU is a personal cryptocurrency **watchlist and price tracker** built with Python. Add the coins you care about, see their latest available prices, and save your list for next time—all without connecting a wallet or placing a trade.
+FOU is my cryptocurrency watchlist and price tracker. You can add coins you want to follow, check their latest available prices, and keep your list saved for next time. There's no account to make, no wallet to connect, and no trading involved.
 
-Version **2.5** introduces a desktop experience built with **CustomTkinter**, three distinct visual themes, responsive ornamental frames, and an illustrated companion that reacts to what happens in the app. The original **command-line interface (CLI)** is still part of the project.
+I started FOU while learning Python, mostly to see whether I could build something useful beyond small practice programs. I kept adding to it, breaking things, fixing them, and eventually turned the terminal version into a full desktop app for **Hack Club Stardance**.
 
-**Project by [FOU-SHREX](https://github.com/FOU-SHREX)** · **Current version: v2.5** · **Created and refined for the Hack Club Stardance project showcase** · **License: MIT (with separate licenses for certain assets)**
+The current version, **v2.5**, has three themes, three companions, and a bunch of small details I spent far too much time adjusting. The original CLI is still here too.
 
-> **Release status:** The FOU v2.5 Windows GUI has been built with PyInstaller and its theme/reaction behavior has been tested in Python. The standalone Windows build is **not yet publicly released or runtime-verified** because Windows Smart App Control blocked the unsigned EXE. Trusted signing and distribution are being prepared. **Linux and macOS v2.5 binaries are also pending.** Please do not mistake older V2 downloads for tested v2.5 GUI builds.
+## Watch FOU in action
+
+Here's a silent walkthrough of the actual desktop app: adding coins, checking prices, saving a watchlist, switching themes, and seeing the companions react.
+
+https://github.com/user-attachments/assets/0a3a8ab3-f181-4bb7-b2a8-0bce8a2d00bb
+
+**[Releases](https://github.com/FOU-SHREX/FOU/releases)** · **[Privacy](PRIVACY.md)** · **[Code Signing Policy](CODE_SIGNING_POLICY.md)** · **[Asset licenses](ASSET_LICENSES.md)** · **[MIT License](LICENSE)**
+
+> **v2.5 release status:** The Windows GUI has been run and tested as a standalone EXE, including the small-price multiplier and all three themes. GitHub Actions has also built Windows, Linux, and macOS packages successfully. The **v2.5 GitHub Release is still being prepared**; the Windows executable is **unsigned**, and Linux/macOS packages have not yet been runtime-tested on those systems. I'm working on the signing and release process rather than asking people to disable their security settings.
 
 ## Contents
 
+- [Watch FOU in action](#watch-fou-in-action)
 - [See FOU](#see-fou)
 - [Why I built it](#why-i-built-it)
 - [The journey: CLI to GUI](#the-journey-cli-to-gui)
@@ -19,8 +28,7 @@ Version **2.5** introduces a desktop experience built with **CustomTkinter**, th
 - [How feedback shaped FOU](#how-feedback-shaped-fou)
 - [Three themes, three companions](#three-themes-three-companions)
 - [The six companion emotions](#the-six-companion-emotions)
-- [The hardest UI challenge: THE FOOL portfolio frame](#the-hardest-ui-challenge-the-fool-portfolio-frame)
-- [Screenshots and demo videos](#screenshots-and-demo-videos)
+- [Two tricky parts of the GUI](#two-tricky-parts-of-the-gui)
 - [Installation and running from source](#installation-and-running-from-source)
 - [How FOU works](#how-fou-works)
 - [Testing and reliability](#testing-and-reliability)
@@ -51,13 +59,13 @@ Three themes are available in the **v2.5** theme selector. Each one has its own 
   </tr>
 </table>
 
-*These preview images are loaded directly from the project's companion artwork. Full app screenshots will be added in the [media section](#screenshots-and-demo-videos).*
+*These are the companions from the project assets. They change expression as you use the app.*
 
 ## Why I built it
 
-FOU is my first serious programming project, and it has grown alongside my Python skills.
+FOU is one of the first projects where I started learning Python by actually building something, instead of just solving exercises.
 
-I sometimes wanted to check a handful of cryptocurrencies without opening an exchange, searching for each coin repeatedly, or dealing with a full trading dashboard. I wanted something small that would remember my list and show me the prices when I came back.
+I wanted to check a few crypto prices without opening an exchange and searching for the same coins every single time. I wanted something small that would remember my list and show me the prices when I came back.
 
 The first idea was straightforward:
 
@@ -66,7 +74,7 @@ The first idea was straightforward:
 3. Keep the list saved for the next session.
 4. Make the experience faster and more enjoyable over time.
 
-That small idea became FOU. It's still **not a trading platform**: it does not hold funds, connect to a crypto wallet, execute orders, or require you to own the coins you track.
+That is pretty much where FOU began. Just to be clear, it is **not a trading platform**: it does not hold funds, connect to a crypto wallet, execute orders, or require you to own the coins you track.
 
 ## The journey: CLI to GUI
 
@@ -78,7 +86,7 @@ The early CLI could add symbols, view a portfolio, remove coins, and save data. 
 
 ### Stage 2 — Making the data real
 
-The next challenge was pulling cryptocurrency information rather than maintaining a simple list. FOU gained:
+Once the basic list worked, I wanted it to show real information. That turned into a few new problems to solve:
 
 - Symbol validation and market-price retrieval.
 - Market-cap-ranked results and readable price formatting, including very small prices.
@@ -90,17 +98,17 @@ This was also when I started thinking about how someone other than me would run 
 
 ### Stage 3 — Building a desktop GUI
 
-Eventually, I wanted FOU to feel like **an actual desktop application**, not a terminal script with a skin on top.
+After spending enough time in the terminal, I wanted FOU to feel like something you could open and use every day — not just a CLI with prettier output.
 
 I moved the interface to **CustomTkinter**, used **Pillow** to prepare and render artwork, and kept the underlying portfolio logic in Python. The GUI introduced a visual coin list, search field, Add Coin button, Refresh and Save actions, activity indicator, theme selector, and companion panel.
 
-The first GUI was not the final one. I kept comparing screenshots, running the program, adjusting spacing and scaling, then testing again. A lot of the project became about visual accuracy **and** reliable behavior.
+The first GUI looked nothing like the current one. I would run it, spot a problem with a frame or some spacing, adjust the Python code, and try again. Getting it to look right while still working properly took much longer than I expected.
 
 ### Stage 4 — FOU v2.5: three finished themes
 
-The current release line focuses on three complete, isolated themes: **FOU DEFAULT**, **THE FOOL**, and **VOID**. Their characters, background illustrations, controls, text styles, frames, and reactions are deliberately different, while the underlying portfolio remains the same.
+For v2.5, I decided to finish three themes properly instead of making lots of half-finished ones: **FOU DEFAULT**, **THE FOOL**, and **VOID**. Their characters, background illustrations, controls, text styles, frames, and reactions are deliberately different, while the underlying portfolio remains the same.
 
-I also learned to lock completed designs instead of changing everything every time I improved one theme. Improvements to VOID were specifically tested to avoid breaking FOU DEFAULT and THE FOOL.
+I also learned to lock completed designs instead of changing everything every time I improved one theme. Any time I changed VOID, I made sure FOU DEFAULT and THE FOOL still worked.
 
 ## Features
 
@@ -109,7 +117,7 @@ I also learned to lock completed designs instead of changing everything every ti
 - Add a cryptocurrency by its symbol, with validation against available coins.
 - Reject duplicate symbols and ignore blank input.
 - View the latest available prices in USD and refresh them on demand.
-- Display coins in market-cap-rank order, with readable formatting for tiny prices.
+- Display coins in market-cap-rank order, and show tiny prices with multipliers (like `BABYDOGE ×1,000`) so they do not just look like zero.
 - Remove individual coins using an **×** control on their row.
 - Save and reload the portfolio locally; **no wallet connection** required.
 - Recover to an empty portfolio when the JSON save file is missing or invalid.
@@ -124,12 +132,12 @@ I also learned to lock completed designs instead of changing everything every ti
 - Search icon that focuses the coin-entry field; Enter can also add a coin.
 - Responsive resizing for different window and monitor sizes.
 - Loading feedback and disabled controls while requests are in progress.
-- A **Help** button that opens a linked video in the browser. The help-video destination can be updated as the tutorial is finished.
+- A **Help** button that opens this GitHub README in your browser.
 - A status/activity area that reports success, failures, and network activity.
 
 ## How feedback shaped FOU
 
-I didn't build the interface in one attempt. I worked through feedback, screenshots, regressions, and plenty of small fixes. Some changes looked minor, but made the app noticeably easier to use.
+A lot of FOU came from noticing small things that felt awkward and then going back to fix them. None of these changes is huge on its own, but together they made the app easier to use.
 
 | What I noticed or wanted | What changed |
 | --- | --- |
@@ -143,13 +151,13 @@ I didn't build the interface in one attempt. I worked through feedback, screensh
 | The search icon felt decorative instead of useful | Made clicking it focus the input box. |
 | Users needed clearer progress while loading | Added **Loading** reactions, activity feedback, and temporary control disabling. |
 | Status text alone felt disconnected from the companion | Linked **Idle, Loading, Happy, Angry, Confused, and Proud** to real app events. |
-| People needed a way to learn the UI | Added the **Help** button and video-opening behavior. |
+| People needed a way to learn the UI | Added a **Help** button that opens this README. |
 | Save and Refresh buttons felt inconsistent between themes | Refined icons, fonts, button borders, and themed ornamental treatments. |
 | The interface looked different when maximized or resized | Iterated on layout proportions, render sizes, backgrounds, and frame alignment. |
 | Portfolio text and controls were hard to fit inside artwork | Adjusted padding, coin-row spacing, headings, scrollbar, and border geometry. |
 | One theme's fixes could affect another | Kept the three completed themes isolated and ran cross-theme regression tests. |
 
-The result is the accumulation of many small decisions rather than just one big redesign.
+The final UI is mostly the result of dozens of these little decisions.
 
 ## Three themes, three companions
 
@@ -227,124 +235,78 @@ Every released theme has its own companion-art folder. Expand a gallery to see t
 
 *Gallery paths point to the project's reaction PNGs. Before publishing, verify that each file exists and is included in the Git commit.*
 
-## The hardest UI challenge: THE FOOL portfolio frame
+## Two tricky parts of the GUI
 
-**This deserves its own section because it took far more effort than it looks.**
+The part that surprised me most was how much code went into details that seem simple when you're just looking at the screen. Here are two functions from [`gui.py`](gui.py) that took some real figuring out.
 
-The decorative **Portfolio** border in THE FOOL started as a gold ornamental PNG. Making a static image look right was one thing. Making it actually work around a live, resizable desktop interface was much harder.
+### 1. `build_portfolio_border()` — making THE FOOL's gold frame resize properly
 
-<img src="assets/ui/the_fool/portfolio_frame.png" alt="Original ornate gold Portfolio frame artwork for THE FOOL" width="520">
+THE FOOL uses a detailed gold border around the Portfolio panel. I had the artwork as a transparent PNG, but stretching the whole image made the corners and ornaments look wrong. Worse, the frame didn't always line up with the companion panel after maximizing or resizing the window.
 
-### The problems I had to solve
+<img src="assets/ui/the_fool/portfolio_frame.png" alt="Transparent gold Portfolio frame used in THE FOOL" width="520">
 
-- **The top and bottom edges didn't align** with the Companion frame. A frame could look almost right at one size and be visibly wrong at another.
-- **Resizing stretched the decoration.** Enlarging the entire PNG changed the proportions of corners, top ornaments, and side details.
-- **The content needed its own safe space.** The Portfolio title, search, button, coin rows, scrollbar, and status area had to fit *inside* the decoration instead of colliding with it.
-- **Transparency and layering mattered.** The ornamental frame needed to sit visibly around the UI, not cover interactive elements.
-- **Theme isolation mattered.** Fixing THE FOOL could not break FOU DEFAULT or, later, VOID.
+The solution was to split the image into smaller regions instead of resizing everything together. The real function works with a **5 × 5 grid**. Some parts can grow more than others, so the corners and important ornaments keep much more of their original shape.
 
-### How I approached it
+Here's a small part of the actual code:
 
-I kept adjusting the border using screenshots and repeated real-window tests, including maximization, restoration, and theme switching. The final Python renderer is more than a normal image resize:
+```python
+xs = (0, round(sw * 0.08), round(sw * 0.44),
+      round(sw * 0.57), round(sw * 0.92), sw)
+ys = (0, round(sh * 0.16), round(sh * 0.44),
+      round(sh * 0.56), round(sh * 0.82), sh)
 
-1. **Load the transparent ornament** with Pillow and inspect its alpha channel.
-2. **Divide the source into a 5 × 5 grid** so corners and detailed ornament areas can be handled separately from the regions that need to expand.
-3. **Reconstruct the frame** at the available Portfolio size while preserving the decorative proportions as much as possible.
-4. **Measure the Companion frame's visible horizontal rails** from the image data, then calculate how the Portfolio frame should align vertically.
-5. **Adjust the resulting geometry iteratively**, rather than relying on one fixed `y` offset.
-6. **Calculate the content-safe area** inside the frame and update layout spacing to keep controls legible.
-7. **Re-render on resize**, without changing the other themes' layouts.
-
-This is implemented in the GUI's border-rendering functions, including `build_portfolio_border()`, `get_portfolio_border_vertical_bounds()`, `fit_portfolio_border_to_rails()`, and `render_portfolio_border()`.
-
-### Where Codex helped
-
-I used **OpenAI Codex** while working through this particularly difficult section, especially the Python layout calculations and decorative-border implementation. I also used ChatGPT for debugging discussions, comparisons, and explanations.
-
-The part I value most is the **iteration**: I kept the target design in mind, inspected what the actual GUI produced, reported what still looked wrong, and tested changes until the alignment and sizing were acceptable. Codex was a development tool; it did not replace testing and visual decisions.
-
-**What I learned here:** an attractive mockup is not the same as a responsive working UI. Scaling math, alpha compositing, widget geometry, drawing order, and small layout changes all matter.
-
-<!-- OPTIONAL: After adding a polished close-up screenshot, uncomment the next line:
-![THE FOOL border — close-up in the working FOU GUI](docs/media/screenshots/the-fool-border-detail.png)
--->
-
-## Screenshots and demo videos
-
-I want people to see the progression, not just the final result. The README is ready for screenshots and short videos of the CLI, each theme, and the companions.
-
-### Screenshot showcase
-
-**Planned screenshots:**
-
-| Moment | What the image should show |
-| --- | --- |
-| Original CLI | The terminal menu and first working add/view/save flow. |
-| Improved V2 CLI | Live prices, portfolio sorting, and a real response from the backend. |
-| FOU DEFAULT | The full working GUI with the original companion. |
-| THE FOOL | Full antique-gold GUI with Portfolio and Companion frames in view. |
-| THE FOOL border close-up | The ornamental Portfolio frame that took repeated geometry fixes. |
-| VOID | Full deep-purple GUI with NØXAR and the thorn frames. |
-| Emotion montage | At least one sequence showing Loading, Happy/Angry, and Proud. |
-
-<!-- Screenshot embeds: Uncomment each line after the corresponding file exists in docs/media/screenshots/.
-![FOU v2.5 — FOU DEFAULT](docs/media/screenshots/fou-default.png)
-![FOU v2.5 — THE FOOL](docs/media/screenshots/the-fool.png)
-![FOU v2.5 — VOID](docs/media/screenshots/void.png)
-![FOU through the CLI years](docs/media/screenshots/cli-v2.png)
-![THE FOOL — portfolio border detail](docs/media/screenshots/the-fool-border-detail.png)
--->
-
-### Video walkthroughs
-
-**Planned demonstrations:**
-
-1. **FOU in 60–90 seconds:** Add a coin → refresh → change theme → save → reopen.
-2. **CLI to GUI:** The early terminal app next to the v2.5 desktop UI.
-3. **Three-theme tour:** FOU DEFAULT → THE FOOL → VOID, including resizing.
-4. **Companion reactions:** Loading, Happy, Angry, Confused, Proud, and return to Idle.
-5. **THE FOOL border breakdown:** The target, the misaligned attempts, and the final responsive frame.
-
-> **To add a video to GitHub's README:** Upload it to a video host such as YouTube and link a screenshot thumbnail to the video. GitHub also supports uploaded video assets in certain contexts, but regular Markdown links and thumbnail links are the most dependable README presentation. See the [media setup guide](#adding-your-own-media).
-
-<!-- Video thumbnail/link template: uncomment and replace VIDEO_URL once a real video is online.
-[![Watch the FOU v2.5 demo](docs/media/screenshots/void.png)](VIDEO_URL)
--->
-
-### Adding your own media
-
-Create this structure in the repository whenever the screenshots and videos are ready:
-
-```text
-docs/
-└── media/
-    ├── screenshots/
-    │   ├── cli-v1.png
-    │   ├── cli-v2.png
-    │   ├── fou-default.png
-    │   ├── the-fool.png
-    │   ├── the-fool-border-detail.png
-    │   └── void.png
-    └── videos/
-        └── (optional local video clips)
+for row in range(5):
+    for column in range(5):
+        tile = source.crop((xs[column], ys[row],
+                            xs[column + 1], ys[row + 1]))
+        tile = tile.resize((tile_width, tile_height), Image.Resampling.LANCZOS)
+        frame.alpha_composite(tile, (dx[column], dy[row]))
 ```
 
-For screenshots, save the files with the names above, then uncomment the matching image lines. For videos, upload the finished clip, replace `VIDEO_URL` with its real URL, and uncomment the linked thumbnail. **Do not commit draft videos or screenshots showing personal file paths, keys, or portfolio details you don't want public.**
+That loop cuts out the pieces, resizes them to their new positions, and recombines them on a transparent image. The surrounding code works out the destination sizes. Other helpers, such as `get_portfolio_border_vertical_bounds()` and `render_portfolio_border()`, measure the actual window and align the gold frame with the companion's visible border.
+
+It still took plenty of comparing the running app against the target layout. I worked with **OpenAI Codex** on some of the border-rendering calculations, then kept testing the results and adjusting what didn't match. This was probably the hardest visual part of FOU for me.
+
+### 2. `request_coin_logo()` — downloading and recoloring logos without freezing the app
+
+I thought coin logos would be the easy part. Then I started seeing square backgrounds, odd proportions, and coins whose logos were almost invisible in a dark theme.
+
+The GUI keeps a cache of downloaded logos. If an image is already available, it can reuse it. If not, `request_coin_logo()` starts a background download instead of making the whole window wait.
+
+This is the key idea from the function:
+
+```python
+if image_url in coin_logo_loading:
+    return
+
+coin_logo_loading.add(image_url)
+
+threading.Thread(
+    target=worker,
+    daemon=True
+).start()
+```
+
+The loading set stops the same image from being downloaded several times at once. Inside the worker, FOU fetches the image and passes it to `normalize_coin_logo()`. Once the download finishes, the UI is updated using `app.after(...)` rather than directly changing widgets from the worker thread.
+
+The rest of the image-processing code uses Pillow to crop, mask, and tint logos for the active theme. There's also a cache for the themed versions, so changing from FOU DEFAULT to VOID doesn't mean downloading all the images again.
+
+Both of these taught me the same thing: getting a feature to *work* is only half the job. Making it look consistent and behave well when people resize the window or switch themes is another challenge.
 
 ## Installation and running from source
 
 ### Downloadable applications — v2.5 release in preparation
 
-The intended distribution options are:
+The three v2.5 packages have been built through GitHub Actions. I'm still getting them ready for the official release.
 
-| Platform | Intended file | Status |
+| Platform | Planned download | Current state |
 | --- | --- | --- |
-| Windows portable | `FOU-v2.5-Windows.zip` | GUI build exists; unsigned EXE blocked by Smart App Control on the development PC; public release pending signing and runtime verification. |
-| Windows installer | `FOU-v2.5-Setup.exe` | Planned; not built or signed yet. |
-| Linux | `FOU-v2.5-Linux.tar.gz` | v2.5 build and clean-system test pending. |
-| macOS | `FOU-v2.5-macOS.zip` | v2.5 build and Mac runtime test pending. |
+| Windows portable | `FOU-v2.5-Windows.zip` | Built and launched successfully. Core behavior and the three themes tested. **Unsigned**; Windows may warn or block it. |
+| Windows installer | `FOU-v2.5-Setup.exe` | Not built yet; a future packaging step. |
+| Linux | `FOU-v2.5-Linux.tar.gz` | GitHub Actions build passed; runtime test on Linux still needed. |
+| macOS | `FOU-v2.5-macOS.zip` | GitHub Actions build passed; runtime test on macOS still needed. |
 
-When verified artifacts are published, find them on the [GitHub Releases page](https://github.com/FOU-SHREX/FOU/releases). **A ZIP download is not a single EXE:** for the portable Windows release, extract the complete folder and keep its `_internal` contents alongside `FOU.exe`.
+When v2.5 is published, I'll put the downloads on the [Releases page](https://github.com/FOU-SHREX/FOU/releases). For Windows, **extract the entire ZIP** and keep the `_internal` folder next to `FOU.exe`. The EXE isn't signed yet, so Windows may display an unknown-publisher warning or block it. I'm exploring SignPath Foundation for signing, but approval is not guaranteed. Please don't turn off Windows security just to run FOU.
 
 ### Run the desktop GUI with Python
 
@@ -369,7 +331,7 @@ The CLI uses a numbered terminal menu to add, view, remove, and save coins. It i
 
 ### Beginner's quick start
 
-In the **GUI**, type a symbol such as `BTC` into the entry field and click **+ Add Coin**. Once it appears in the Portfolio, try **Refresh**, switch between the three themes, and click **Save**. The companion responds to each operation.
+In the **GUI**, type a symbol such as `BTC` into the entry field and click **+ Add Coin**. Once it appears in the Portfolio, try **Refresh**, switch between the three themes, and click **Save**. The companion responds to each operation. **Help** opens this README in your browser (included in the next GUI build).
 
 The CLI uses numbered menu options instead of GUI buttons. In that mode you can add multiple symbols, enter `DONE`, and select **View Portfolio** to display prices.
 
@@ -434,7 +396,7 @@ I test both the **portfolio behavior** and the **interface behavior** because a 
 - Test Add Coin, Refresh, Save, Help, and selection behavior.
 - Confirm the current portfolio remains consistent while changing themes.
 
-**v2.5 verification so far:** the six VOID reaction states and the three-theme regression checks passed in the Python GUI. PyInstaller completed the Windows standalone build, but Windows Smart App Control blocked the unsigned executable before runtime testing. Public installers and other OS artifacts should only be marked verified after clean-system tests.
+**v2.5 verification so far:** The three themes and companion reactions have been tested in the Python GUI. The Windows standalone EXE from GitHub Actions also launched and was tested, including adding coins, tiny-price multipliers, and switching themes. All three operating-system packaging jobs passed in GitHub Actions, but Linux and macOS still need actual runtime testing. The Windows app is not code-signed yet; a successful build or local launch doesn't remove Windows reputation/security warnings.
 
 ## What I learned
 
@@ -457,7 +419,7 @@ FOU became much bigger than my original plan. The biggest lessons weren't just a
 | **Packaging and release engineering** | Virtual environments, PyInstaller specs, Windows binaries, Linux archives, GitHub, and signing/trust issues. |
 | **Working with AI tools** | Explaining a problem clearly, reviewing generated solutions critically, testing the results, and knowing when to iterate. |
 
-I started by asking, *“Can I make this work in the terminal?”* and eventually found myself asking, *“Will the panel line up at every size, will the companion react correctly, and will another person be able to install it?”* That progression is what makes FOU meaningful to me.
+At first I was happy just to see a coin show up in the terminal. Now I'm thinking about whether the frames resize properly, whether saves work after reopening the EXE, and whether someone else can run the app. That shift has been one of the best parts of building FOU.
 
 ## AI tools and credits
 
@@ -468,7 +430,7 @@ I used AI as part of the **development process**, especially **ChatGPT** and **O
 - **AI image-generation tools:** Creating or refining theme artwork, companions, emotions, backgrounds, ornaments, logos, and icons.
 - **My role:** Deciding the direction, giving feedback, comparing target and actual screenshots, modifying/integrating code, testing behavior, and choosing when a design was finished.
 
-AI assistance is acknowledged rather than hidden. The project was developed through repeated **human direction, implementation, and testing** alongside those tools.
+I'm mentioning the tools because they genuinely helped me learn and get past some difficult parts. But there was still a lot of going back into the app, seeing what looked wrong, changing things, and testing them again.
 
 ### Visual assets and licenses
 
@@ -482,8 +444,8 @@ FOU-controlled project artwork is documented in [`ASSET_LICENSES.md`](ASSET_LICE
 - Latest prices depend on internet access, the hosted backend, and third-party market-data availability.
 - A free-hosted backend may be slow to respond after inactivity.
 - Saves are local to each device; FOU does not currently synchronize across devices.
-- A v2.5 Windows EXE has been built but is **unsigned**, and Smart App Control has blocked its execution on the development PC. Code signing is being explored through **SignPath Foundation**; approval is not guaranteed.
-- The **v2.5** Linux and macOS desktop artifacts are not yet validated. Earlier V2 CLI packaging work is not proof that the v2.5 GUI builds work on those operating systems.
+- The v2.5 Windows EXE runs on my Windows PC but is still **unsigned**. Windows SmartScreen or Smart App Control can warn or block users. I'm looking into **SignPath Foundation**; code-signing approval is not guaranteed.
+- The v2.5 Linux and macOS GUI packages have been built successfully, but I haven't confirmed them running on real Linux or macOS machines yet.
 
 ### Future ideas (not released features)
 
@@ -491,7 +453,7 @@ FOU-controlled project artwork is documented in [`ASSET_LICENSES.md`](ASSET_LICE
 - Telegram bot integration.
 - More portfolio and market context.
 - Additional planned themes such as Terminal, Frost, and Neon after they're complete and tested.
-- More helpful tutorials, demo videos, and community-driven accessibility improvements.
+- More helpful tutorials and accessibility improvements.
 
 ## License and contributions
 
@@ -505,4 +467,4 @@ FOU's original source code is distributed under the [MIT License](LICENSE), subj
 
 ---
 
-*FOU started as a small Python CLI. Every bug report, design revision, failed border alignment, and successful test helped turn it into a desktop project I could share.*
+*It started with a few Python functions and a terminal menu. It took a lot of wrong turns to get here, but I learned something from most of them.*
