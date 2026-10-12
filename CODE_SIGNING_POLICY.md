@@ -6,7 +6,9 @@
 
 ## Status
 
-FOU v2.5 currently has **unsigned test builds**. The project is preparing to apply for free open-source code signing through SignPath Foundation. **The project has not yet been approved for SignPath signing, and no FOU downloads should be described as SignPath-signed until a signature has been applied and verified.**
+FOU v2.5.0 has been publicly released on GitHub. The current Windows executable is unsigned, and the project is applying to SignPath Foundation for free open-source code signing.
+
+No FOU release will be described as SignPath-signed until the project is approved and the executable's signature is verified.
 
 For approved future releases, the required acknowledgement will be:
 
@@ -33,14 +35,15 @@ These roles will be updated if more maintainers join. Multi-factor authenticatio
 
 ## Privacy and security
 
-FOU is a cryptocurrency watchlist, not a wallet or trading platform. The client stores a list of coin symbols and identifiers locally. For market data, the app contacts a hosted FOU backend; the backend queries third-party market-data services. The GUI can also download coin logos from remote image URLs and open an external help video at the user's request. These network interactions are described in the project's privacy documentation.
+FOU is a cryptocurrency watchlist, not a wallet or trading platform. The client stores a list of coin symbols and identifiers locally. For market data, the app contacts a hosted FOU backend; the backend queries third-party market-data services. The GUI can also download coin logos from remote image URLs. The Help button opens the project's GitHub README in the user's browser.
 
-The project will publish a **PRIVACY.md** notice and link it from the README before requesting SignPath Foundation approval. That notice will describe the destinations and types of information transferred during normal use.
+The project publishes its privacy policy at [PRIVACY.md](PRIVACY.md). It describes local storage, backend requests, network interactions, and relevant third-party services.
 
 ## Release and installation
 
 - Release downloads will identify the source revision and version they were built from.
 - Installers, once available, will provide a normal Windows uninstall path. Portable builds can be removed by deleting the application folder; user data is stored separately and can be removed manually.
 - Any unsigned release will be clearly labeled **unsigned** and will not be represented as publisher-verified.
+- The first public desktop GUI release is [v2.5.0](https://github.com/FOU-SHREX/FOU/releases/tag/v2.5.0).
 
 **This policy documents the intended signing procedure. It does not grant any software a trusted publisher status or prove that current binaries are signed.**
