@@ -2052,7 +2052,7 @@ def request_coin_logo(image_url, logo_label):
     ).start()
 
 
-def create_coin_row(row_number, symbol, name, price_text, image_url):
+def create_coin_row(row_number, symbol, name, price_text, image_url, multiplier_text= ""):
     theme = THEMES[current_theme]
 
     is_selected = symbol == selected_symbol
@@ -2176,6 +2176,25 @@ def create_coin_row(row_number, symbol, name, price_text, image_url):
         sticky= "w"
     )
 
+    if multiplier_text:
+    
+        multiplier_label = ctk.CTkLabel(
+            asset_info,
+            text= multiplier_text,
+            font= ("Consolas", 12, "bold"),
+            height= 22,
+            text_color= theme["muted_text"]
+        )
+
+        multiplier_label.grid(
+            row= 0,
+            column= 1,
+            sticky= "w",
+            padx= (6, 0)
+        )
+
+        bind_coin_selector(multiplier_label, symbol, name)
+
     name_label = ctk.CTkLabel(
         asset_info,
         text= name,
@@ -2282,14 +2301,15 @@ def draw_coin_rows(rows):
         widget.destroy()
 
     for row_number, row in enumerate(rows):
-        symbol, name, price_text, image_url = row
+        symbol, name, price_text, image_url, multiplier_text = row
 
         create_coin_row(
             row_number,
             symbol,
             name,
             price_text,
-            image_url
+            image_url,
+            multiplier_text
         )
 
     if rows:
@@ -3793,21 +3813,33 @@ def render_portfolio(status, coins, success_message, success_state):
     for row_number, coin in enumerate(coins):
         price = coin["current_price"]
 
+        multiplier = 1
+        display_price = price
+
+        while 0 < display_price < 0.00000001:
+            multiplier *= 1000
+            display_price = price * multiplier
+
+        multiplier_text = (
+            f"×{multiplier:,}" if multiplier > 1 else ""
+        )
+
         if price == 0:
             price_text = "Price unavailable"
-        elif price >= 1:
-            price_text = f"${price:,.2f}"
-        elif price >= 0.01:
-            price_text = f"${price:,.4f}"
+        elif display_price >= 1:
+            price_text = f"${display_price:,.2f}"
+        elif display_price >= 0.01:
+            price_text = f"${display_price:,.4f}"
         else:
-            price_text = f"${price:,.8f}"
+            price_text = f"${display_price:,.8f}"
 
         last_rows.append(
             (
                 coin["symbol"].upper(),
                 coin["name"],
                 price_text,
-                coin.get("image")
+                coin.get("image"),
+                multiplier_text
             )
         )
 
