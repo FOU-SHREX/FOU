@@ -2,6 +2,7 @@ import json
 import os
 import requests
 import sys
+import tempfile
 from pathlib import Path
 
 BACKEND_URL = (f"https://fou-backend.onrender.com")
@@ -155,9 +156,34 @@ def load_portfolio():
 
 
 def save_portfolio(portfolio):
-    with open(SAVE_FILE, "w") as f:
-        json.dump(portfolio, f)
-    
+    # Write to a temporary file first so a failed write cannot truncate
+    # a previously saved portfolio.
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=SAVE_FILE.parent,
+            prefix=f".{SAVE_FILE.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as temp_file:
+            temp_path = Path(temp_file.name)
+            json.dump(portfolio, temp_file)
+            temp_file.flush()
+            os.fsync(temp_file.fileno())
+
+        # The temporary file is on the same filesystem as SAVE_FILE.
+        # Replace the old save only after the new JSON is fully written.
+        os.replace(temp_path, SAVE_FILE)
+        temp_path = None
+    finally:
+        if temp_path is not None:
+            try:
+                temp_path.unlink(missing_ok=True)
+            except OSError:
+                pass
+
     return "saved"
 
 
