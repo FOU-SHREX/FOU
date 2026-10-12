@@ -16,7 +16,7 @@ https://github.com/user-attachments/assets/0a3a8ab3-f181-4bb7-b2a8-0bce8a2d00bb
 
 **[Download FOU v2.5.0](https://github.com/FOU-SHREX/FOU/releases/tag/v2.5.0)** · **[Privacy](PRIVACY.md)** · **[Code Signing Policy](CODE_SIGNING_POLICY.md)** · **[Asset licenses](ASSET_LICENSES.md)** · **[MIT License](LICENSE)**
 
-> **v2.5.0 is released!** You can download FOU for Windows, Linux, or macOS from the [official GitHub Release](https://github.com/FOU-SHREX/FOU/releases/tag/v2.5.0). I tested the Windows executable locally and also downloaded and ran the published ZIP on another Windows laptop, where it worked without a security warning. The Windows app is still **unsigned**, so other PCs may warn or block it. Linux and macOS builds passed GitHub Actions, but still need real-device runtime testing. I have submitted a code-signing application to SignPath Foundation; approval is pending.
+> **v2.5.0 is released!** You can download FOU for Windows, Linux, or macOS from the [official GitHub Release](https://github.com/FOU-SHREX/FOU/releases/tag/v2.5.0). I tested the Windows executable locally and also downloaded and ran the published ZIP on another Windows laptop, where it worked without a security warning. The Windows app is still **unsigned**, so other PCs may warn or block it. The Linux and macOS downloads are **experimental**: their GitHub Actions builds completed, but neither has been launched and tested on its target operating system. I have submitted a code-signing application to SignPath Foundation; approval is pending.
 
 ## Before You Try FOU v2.5.0
 
@@ -34,9 +34,17 @@ FOU v2.5.0 is **not code-signed yet**. I've applied to SignPath Foundation, but 
 
 Some PCs may show **Windows protected your PC** through SmartScreen. If you've checked the official download and trust it, Windows may offer **More info → Run anyway**. Windows 11 Smart App Control can also block unsigned applications without offering an individual-app exception. **Please don't disable system-wide security just to test FOU.** You can watch the [demo video](#watch-fou-in-action) instead if your system blocks it.
 
+### Linux and macOS are experimental 🐧🍎
+
+I've left the Linux and macOS downloads available because their GitHub Actions builds completed. A separate source/package check also confirmed that the Linux archive contains the expected project assets. **That isn't the same as running the application**, though. I haven't been able to test either version on an actual Linux or Mac desktop yet.
+
+If you're on Linux or macOS, you're welcome to give the builds a try, but please treat them as experimental. If something fails, I'd be grateful for a bug report rather than assuming the whole project works that way.
+
+**Reviewing FOU for Stardust?** If a Linux or Mac build doesn't work on your computer, please take a look at the [Windows demo video](#watch-fou-in-action) to see the app's features, themes, and interactions. It's completely okay to skip hands-on testing on an unverified platform. I hope you'll consider the Windows demonstration when evaluating the project, instead of judging it only by an experimental build.
+
 ### A couple of things to remember 📦
 
-On Windows, **extract the whole ZIP before launching** and keep `FOU.exe` alongside its `_internal` folder. You don't need to install Python separately. The Linux and macOS packages are available, but I haven't yet tested them running on those systems.
+On Windows, **extract the whole ZIP before launching** and keep `FOU.exe` alongside its `_internal` folder. You don't need to install Python separately.
 
 If you find a bug or have trouble launching FOU, please [open an issue](https://github.com/FOU-SHREX/FOU/issues) with your OS and what happened. I really appreciate the feedback!
 
@@ -325,8 +333,8 @@ The three packages below are available in the [FOU v2.5.0 GitHub Release](https:
 | Platform | Download | Testing status |
 | --- | --- | --- |
 | Windows portable | [FOU-v2.5-Windows.zip](https://github.com/FOU-SHREX/FOU/releases/download/v2.5.0/FOU-v2.5-Windows.zip) | Launched successfully on my PC and on a second Windows laptop from the published download. **Unsigned**; some PCs may warn or block it. |
-| Linux | [FOU-v2.5-Linux.tar.gz](https://github.com/FOU-SHREX/FOU/releases/download/v2.5.0/FOU-v2.5-Linux.tar.gz) | GitHub Actions build passed; Linux runtime testing still needed. |
-| macOS | [FOU-v2.5-macOS.zip](https://github.com/FOU-SHREX/FOU/releases/download/v2.5.0/FOU-v2.5-macOS.zip) | GitHub Actions build passed; macOS runtime testing still needed. |
+| Linux — **Experimental** | [FOU-v2.5-Linux.tar.gz](https://github.com/FOU-SHREX/FOU/releases/download/v2.5.0/FOU-v2.5-Linux.tar.gz) | GitHub Actions build completed; packaged assets matched the tagged source in a separate check. **No desktop runtime test.** |
+| macOS — **Experimental** | [FOU-v2.5-macOS.zip](https://github.com/FOU-SHREX/FOU/releases/download/v2.5.0/FOU-v2.5-macOS.zip) | GitHub Actions build completed. **No desktop runtime test.** |
 
 **Windows quick start:** Download the Windows ZIP, extract all files into one folder, then run `FOU.exe`. Keep `_internal` next to the EXE. You don't need to install Python. If you hit a first-time loading delay or Windows security warning, read [Before You Try FOU](#before-you-try-fou-v250) above. There isn't a Windows installer yet; this is a portable release.
 
@@ -418,7 +426,7 @@ I test both the **portfolio behavior** and the **interface behavior** because a 
 - Test Add Coin, Refresh, Save, Help, and selection behavior.
 - Confirm the current portfolio remains consistent while changing themes.
 
-**v2.5.0 verification so far:** The three themes and companion reactions have been tested in the Python GUI. The Windows standalone EXE was also tested, including adding coins, tiny-price multipliers, and switching themes. I downloaded the published Windows ZIP onto another laptop and ran it successfully without a security warning. All three operating-system packaging jobs passed in GitHub Actions, but Linux and macOS still need actual runtime testing. The Windows app is unsigned, so a successful test on one device doesn't guarantee another device won't show a Windows security warning.
+**v2.5.0 verification so far:** The three themes and companion reactions have been tested in the Python GUI. The Windows standalone EXE was also tested, including adding coins, tiny-price multipliers, and switching themes. I downloaded the published Windows ZIP onto another laptop and ran it successfully without a security warning. All three operating-system packaging jobs passed in GitHub Actions. A separate source/package inspection checked the Linux archive's asset integrity, but **Linux and macOS GUI runtime testing remains incomplete**. The Windows app is unsigned, so a successful test on one device doesn't guarantee another device won't show a Windows security warning.
 
 ## What I learned
 
@@ -467,7 +475,7 @@ FOU-controlled project artwork is documented in [`ASSET_LICENSES.md`](ASSET_LICE
 - After inactivity, the free-hosted backend may need to wake up. The first coin or saved-portfolio price load can take **around 60 seconds**; later requests are usually faster.
 - Saves are local to each device; FOU does not currently synchronize across devices.
 - The published v2.5.0 Windows EXE has run successfully on two Windows laptops but is still **unsigned**. Windows SmartScreen or Smart App Control can warn or block users on other devices. I've submitted an application to **SignPath Foundation**; approval is not guaranteed.
-- The v2.5 Linux and macOS GUI packages have been built successfully, but I haven't confirmed them running on real Linux or macOS machines yet.
+- The v2.5 Linux and macOS downloads are **experimental**. They were built successfully, but I haven't confirmed them running on their target operating systems. If you can't run them, the [Windows walkthrough](#watch-fou-in-action) shows the working app.
 
 ### Future ideas (not released features)
 
