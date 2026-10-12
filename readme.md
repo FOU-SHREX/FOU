@@ -14,13 +14,36 @@ Here's a silent walkthrough of the actual desktop app: adding coins, checking pr
 
 https://github.com/user-attachments/assets/0a3a8ab3-f181-4bb7-b2a8-0bce8a2d00bb
 
-**[Releases](https://github.com/FOU-SHREX/FOU/releases)** · **[Privacy](PRIVACY.md)** · **[Code Signing Policy](CODE_SIGNING_POLICY.md)** · **[Asset licenses](ASSET_LICENSES.md)** · **[MIT License](LICENSE)**
+**[Download FOU v2.5.0](https://github.com/FOU-SHREX/FOU/releases/tag/v2.5.0)** · **[Privacy](PRIVACY.md)** · **[Code Signing Policy](CODE_SIGNING_POLICY.md)** · **[Asset licenses](ASSET_LICENSES.md)** · **[MIT License](LICENSE)**
 
-> **v2.5 release status:** The Windows GUI has been run and tested as a standalone EXE, including the small-price multiplier and all three themes. GitHub Actions has also built Windows, Linux, and macOS packages successfully. The **v2.5 GitHub Release is still being prepared**; the Windows executable is **unsigned**, and Linux/macOS packages have not yet been runtime-tested on those systems. I'm working on the signing and release process rather than asking people to disable their security settings.
+> **v2.5.0 is released!** You can download FOU for Windows, Linux, or macOS from the [official GitHub Release](https://github.com/FOU-SHREX/FOU/releases/tag/v2.5.0). I tested the Windows executable locally and also downloaded and ran the published ZIP on another Windows laptop, where it worked without a security warning. The Windows app is still **unsigned**, so other PCs may warn or block it. Linux and macOS builds passed GitHub Actions, but still need real-device runtime testing. I have submitted a code-signing application to SignPath Foundation; approval is pending.
+
+## Before You Try FOU v2.5.0
+
+Hey! Thanks for giving FOU a try. A few quick notes might make your first run smoother.
+
+### First price load can take around 60 seconds ⏳
+
+When you add your first coin, or reopen FOU with a saved portfolio, **the prices may take around a minute to appear**. FOU gets market prices from an online backend that I'm hosting on a free service. After a period of inactivity, that server can go to sleep, and the first request needs to wake it up.
+
+Your coin list is saved locally on your computer; the wait is mainly for **fresh prices**, not for reading your saved portfolio. Once the server is awake, adding coins and refreshing should usually be quicker. If nothing loads after a minute or two, check your internet connection and try **Refresh** again.
+
+### Windows might show a security warning 🛡️
+
+FOU v2.5.0 is **not code-signed yet**. I've applied to SignPath Foundation, but approval is still pending. The published Windows ZIP worked on another laptop without any warning; that doesn't mean every Windows computer will behave the same way.
+
+Some PCs may show **Windows protected your PC** through SmartScreen. If you've checked the official download and trust it, Windows may offer **More info → Run anyway**. Windows 11 Smart App Control can also block unsigned applications without offering an individual-app exception. **Please don't disable system-wide security just to test FOU.** You can watch the [demo video](#watch-fou-in-action) instead if your system blocks it.
+
+### A couple of things to remember 📦
+
+On Windows, **extract the whole ZIP before launching** and keep `FOU.exe` alongside its `_internal` folder. You don't need to install Python separately. The Linux and macOS packages are available, but I haven't yet tested them running on those systems.
+
+If you find a bug or have trouble launching FOU, please [open an issue](https://github.com/FOU-SHREX/FOU/issues) with your OS and what happened. I really appreciate the feedback!
 
 ## Contents
 
 - [Watch FOU in action](#watch-fou-in-action)
+- [Before You Try FOU v2.5.0](#before-you-try-fou-v250)
 - [See FOU](#see-fou)
 - [Why I built it](#why-i-built-it)
 - [The journey: CLI to GUI](#the-journey-cli-to-gui)
@@ -29,7 +52,7 @@ https://github.com/user-attachments/assets/0a3a8ab3-f181-4bb7-b2a8-0bce8a2d00bb
 - [Three themes, three companions](#three-themes-three-companions)
 - [The six companion emotions](#the-six-companion-emotions)
 - [Two tricky parts of the GUI](#two-tricky-parts-of-the-gui)
-- [Installation and running from source](#installation-and-running-from-source)
+- [Download, installation, and running from source](#download-installation-and-running-from-source)
 - [How FOU works](#how-fou-works)
 - [Testing and reliability](#testing-and-reliability)
 - [What I learned](#what-i-learned)
@@ -233,7 +256,7 @@ Every released theme has its own companion-art folder. Expand a gallery to see t
 
 </details>
 
-*Gallery paths point to the project's reaction PNGs. Before publishing, verify that each file exists and is included in the Git commit.*
+*These galleries reference the reaction PNGs in the project assets.*
 
 ## Two tricky parts of the GUI
 
@@ -293,20 +316,19 @@ The rest of the image-processing code uses Pillow to crop, mask, and tint logos 
 
 Both of these taught me the same thing: getting a feature to *work* is only half the job. Making it look consistent and behave well when people resize the window or switch themes is another challenge.
 
-## Installation and running from source
+## Download, installation, and running from source
 
-### Downloadable applications — v2.5 release in preparation
+### Download the published v2.5.0 release
 
-The three v2.5 packages have been built through GitHub Actions. I'm still getting them ready for the official release.
+The three packages below are available in the [FOU v2.5.0 GitHub Release](https://github.com/FOU-SHREX/FOU/releases/tag/v2.5.0). They were built through GitHub Actions.
 
-| Platform | Planned download | Current state |
+| Platform | Download | Testing status |
 | --- | --- | --- |
-| Windows portable | `FOU-v2.5-Windows.zip` | Built and launched successfully. Core behavior and the three themes tested. **Unsigned**; Windows may warn or block it. |
-| Windows installer | `FOU-v2.5-Setup.exe` | Not built yet; a future packaging step. |
-| Linux | `FOU-v2.5-Linux.tar.gz` | GitHub Actions build passed; runtime test on Linux still needed. |
-| macOS | `FOU-v2.5-macOS.zip` | GitHub Actions build passed; runtime test on macOS still needed. |
+| Windows portable | [FOU-v2.5-Windows.zip](https://github.com/FOU-SHREX/FOU/releases/download/v2.5.0/FOU-v2.5-Windows.zip) | Launched successfully on my PC and on a second Windows laptop from the published download. **Unsigned**; some PCs may warn or block it. |
+| Linux | [FOU-v2.5-Linux.tar.gz](https://github.com/FOU-SHREX/FOU/releases/download/v2.5.0/FOU-v2.5-Linux.tar.gz) | GitHub Actions build passed; Linux runtime testing still needed. |
+| macOS | [FOU-v2.5-macOS.zip](https://github.com/FOU-SHREX/FOU/releases/download/v2.5.0/FOU-v2.5-macOS.zip) | GitHub Actions build passed; macOS runtime testing still needed. |
 
-When v2.5 is published, I'll put the downloads on the [Releases page](https://github.com/FOU-SHREX/FOU/releases). For Windows, **extract the entire ZIP** and keep the `_internal` folder next to `FOU.exe`. The EXE isn't signed yet, so Windows may display an unknown-publisher warning or block it. I'm exploring SignPath Foundation for signing, but approval is not guaranteed. Please don't turn off Windows security just to run FOU.
+**Windows quick start:** Download the Windows ZIP, extract all files into one folder, then run `FOU.exe`. Keep `_internal` next to the EXE. You don't need to install Python. If you hit a first-time loading delay or Windows security warning, read [Before You Try FOU](#before-you-try-fou-v250) above. There isn't a Windows installer yet; this is a portable release.
 
 ### Run the desktop GUI with Python
 
@@ -331,7 +353,7 @@ The CLI uses a numbered terminal menu to add, view, remove, and save coins. It i
 
 ### Beginner's quick start
 
-In the **GUI**, type a symbol such as `BTC` into the entry field and click **+ Add Coin**. Once it appears in the Portfolio, try **Refresh**, switch between the three themes, and click **Save**. The companion responds to each operation. **Help** opens this README in your browser (included in the next GUI build).
+In the **GUI**, type a symbol such as `BTC` into the entry field and click **+ Add Coin**. Once it appears in the Portfolio, try **Refresh**, switch between the three themes, and click **Save**. The companion responds to each operation. **Help** opens this README in your browser.
 
 The CLI uses numbered menu options instead of GUI buttons. In that mode you can add multiple symbols, enter `DONE`, and select **View Portfolio** to display prices.
 
@@ -396,7 +418,7 @@ I test both the **portfolio behavior** and the **interface behavior** because a 
 - Test Add Coin, Refresh, Save, Help, and selection behavior.
 - Confirm the current portfolio remains consistent while changing themes.
 
-**v2.5 verification so far:** The three themes and companion reactions have been tested in the Python GUI. The Windows standalone EXE from GitHub Actions also launched and was tested, including adding coins, tiny-price multipliers, and switching themes. All three operating-system packaging jobs passed in GitHub Actions, but Linux and macOS still need actual runtime testing. The Windows app is not code-signed yet; a successful build or local launch doesn't remove Windows reputation/security warnings.
+**v2.5.0 verification so far:** The three themes and companion reactions have been tested in the Python GUI. The Windows standalone EXE was also tested, including adding coins, tiny-price multipliers, and switching themes. I downloaded the published Windows ZIP onto another laptop and ran it successfully without a security warning. All three operating-system packaging jobs passed in GitHub Actions, but Linux and macOS still need actual runtime testing. The Windows app is unsigned, so a successful test on one device doesn't guarantee another device won't show a Windows security warning.
 
 ## What I learned
 
@@ -442,9 +464,9 @@ FOU-controlled project artwork is documented in [`ASSET_LICENSES.md`](ASSET_LICE
 
 - FOU is a watchlist, **not** a portfolio wallet or trading platform.
 - Latest prices depend on internet access, the hosted backend, and third-party market-data availability.
-- A free-hosted backend may be slow to respond after inactivity.
+- After inactivity, the free-hosted backend may need to wake up. The first coin or saved-portfolio price load can take **around 60 seconds**; later requests are usually faster.
 - Saves are local to each device; FOU does not currently synchronize across devices.
-- The v2.5 Windows EXE runs on my Windows PC but is still **unsigned**. Windows SmartScreen or Smart App Control can warn or block users. I'm looking into **SignPath Foundation**; code-signing approval is not guaranteed.
+- The published v2.5.0 Windows EXE has run successfully on two Windows laptops but is still **unsigned**. Windows SmartScreen or Smart App Control can warn or block users on other devices. I've submitted an application to **SignPath Foundation**; approval is not guaranteed.
 - The v2.5 Linux and macOS GUI packages have been built successfully, but I haven't confirmed them running on real Linux or macOS machines yet.
 
 ### Future ideas (not released features)
